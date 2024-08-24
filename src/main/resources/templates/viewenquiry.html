@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body >
+<ul class="nav">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="dashboard">View Dashboard</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="addEnquiry">Add New Enquiry</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="logout">Logout</a>
+    </li>
+
+</ul>
+<hr/>
+<div class="container">
+    <h1>View Enquiries Here</h1><br>
+    <div class="table-response">
+        <form th:action="@{/viewfilteredEnquiry}" th:object="${viewEnqFilterRequest}">
+            <table>
+            <tr>
+                <td>Class Mode:</td>
+                <td><select th:field="*{classMode}">
+                    <option value="">-Select-</option>
+                    <option value="Online">Online</option>
+                    <option value="Classroom">Classroom</option>
+                </select></td>
+                <td>Course:</td>
+                <td><select th:field="*{courseName}">
+                    <option value="">-Select-</option>
+                    <option value="Java">Java</option>
+                    <option value="Python">Python</option>
+                    <option value="Devops">Devops</option>
+                    <option value="SpringBoot">SpringBoot</option>
+                </select></td>
+                <td>Status:</td>
+                <td><select th:field="*{enqStatus}">
+                    <option value="">-Select-</option>
+                    <option value="Open">Open</option>
+                    <option value="Enrolled">Enrolled</option>
+                    <option value="Lost">Lost</option>
+                </select></td>
+                <td><input type="submit" value="Search" class="btn btn-primary"></td>
+            </tr>
+            </table>
+        </form>
+    <table class="table table-bordered table-hover" th:object="${enquiries}">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col">Sr.No</th>
+            <th scope="col">Name</th>
+            <th scope="col">Phno</th>
+            <th scope="col">Course Name</th>
+            <th scope="col">Class Mode</th>
+            <th scope="col">Status</th>
+            <th scope="col">Edit</th>
+
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="enquiry,indexStart:${enquiries}">
+            <td th:text="${indexStart.index+1}"></td>
+            <td th:text="${enquiry.student_name}"></td>
+            <td th:text="${enquiry.student_phno}"></td>
+            <td th:text="${enquiry.course_name}"></td>
+            <td th:text="${enquiry.class_mode}"></td>
+            <td th:text="${enquiry.enq_status}"></td>
+            <td><a th:href="@{/editEnquiry?(enqid=${enquiry.enq_id})}"/>Edit</td>
+        </tr>
+        <tr th:if="${enquiries.size()==0}">
+            <td colspan="7">No Records found</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+</body>
+</html>
